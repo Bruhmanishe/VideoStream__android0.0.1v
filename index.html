@@ -10,7 +10,7 @@
   <body>
     <div class="wrapper">
       <video id="video" width="500" height="500" autoplay></video>
-      <button onclick="startCamera()">Begin Stream</button>
+      <button onclick="startCamera()" id="button">Begin Stream</button>
       <div id="errorDiv"></div>
     </div>
 
@@ -23,10 +23,25 @@
           });
           const videoElement = document.getElementById("video");
           videoElement.srcObject = stream;
+          if (document.getElementById("button").innerHTML === "Begin Stream") {
+            document.getElementById("button").onclick = stopStream();
+            document.getElementById("button").innerHTML = "Stop Streaming";
+          } else {
+            document.getElementById("button").onclick = startCamera();
+            document.getElementById("button").innerHTML = "Begin Stream";
+          }
         } catch (error) {
           document.getElementById("errorDiv").innerHTML =
             "Sorry error: " + '"' + error + '"' + " has occured";
+          document.getElementById("button").innerHTML = "Begin Stream";
         }
+      }
+
+      function stopStream() {
+        const stream = null;
+        const videoElement = document.getElementById("video");
+        videoElement.srcObject = stream;
+        document.getElementById("button").innerHTML = "Begin Stream";
       }
     </script>
   </body>
