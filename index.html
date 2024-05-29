@@ -9,7 +9,7 @@
   </head>
   <body>
     <div class="wrapper">
-      <video id="video" width="500" height="500" autoplay></video>
+      <video id="video" width="500" height="500" autoplay noStream></video>
       <button onclick="startCamera()" id="button">Begin Stream</button>
       <div id="errorDiv"></div>
     </div>
@@ -17,31 +17,27 @@
     <script>
       async function startCamera() {
         document.getElementById("errorDiv").innerHTML = "";
-        try {
-          const stream = await navigator.mediaDevices.getUserMedia({
-            video: true,
-          });
-          const videoElement = document.getElementById("video");
-          videoElement.srcObject = stream;
-          if (document.getElementById("button").innerHTML === "Begin Stream") {
-            document.getElementById("button").onclick = stopStream();
-            document.getElementById("button").innerHTML = "Stop Streaming";
-          } else {
-            document.getElementById("button").onclick = startCamera();
+        if (document.getElementById("video").hasAttribute("noStream")) {
+          try {
+            const stream = await navigator.mediaDevices.getUserMedia({
+              video: true,
+            });
+            const videoElement = document.getElementById("video");
+            videoElement.srcObject = stream;
+            document.getElementById("button").innerHTML = "stopStream";
+            videoElement.removeAttribute("noStream");
+          } catch (error) {
+            document.getElementById("errorDiv").innerHTML =
+              "Sorry error: " + '"' + error + '"' + " has occured";
             document.getElementById("button").innerHTML = "Begin Stream";
           }
-        } catch (error) {
-          document.getElementById("errorDiv").innerHTML =
-            "Sorry error: " + '"' + error + '"' + " has occured";
+        } else {
+          const stream = null;
+          const videoElement = document.getElementById("video");
+          videoElement.srcObject = stream;
           document.getElementById("button").innerHTML = "Begin Stream";
+          videoElement.setAttribute("noStream", "");
         }
-      }
-
-      function stopStream() {
-        const stream = null;
-        const videoElement = document.getElementById("video");
-        videoElement.srcObject = stream;
-        document.getElementById("button").innerHTML = "Begin Stream";
       }
     </script>
   </body>
