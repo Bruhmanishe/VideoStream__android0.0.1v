@@ -31,12 +31,21 @@
               "Sorry error: " + '"' + error + '"' + " has occured";
             document.getElementById("button").innerHTML = "Begin Stream";
           }
+          vibration();
         } else {
           const stream = null;
           const videoElement = document.getElementById("video");
           videoElement.srcObject = stream;
           document.getElementById("button").innerHTML = "Begin Stream";
           videoElement.setAttribute("noStream", "");
+          vibration();
+        }
+      }
+      function vibration() {
+        if ("vibrate" in navigator) {
+          navigator.vibrate(100);
+        } else {
+          console.log("no vibration for you");
         }
       }
     </script>
