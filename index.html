@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="css/style.css" rel="stylesheet" />
+    <title>Video Stream</title>
+  </head>
+  <body>
+    <div class="wrapper">
+      <video id="video" width="500" height="500" autoplay></video>
+      <button onclick="startCamera()">Begin Stream</button>
+      <div id="errorDiv"></div>
+    </div>
+
+    <script>
+      async function startCamera() {
+        document.getElementById("errorDiv").innerHTML = "";
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({
+            video: true,
+          });
+          const videoElement = document.getElementById("video");
+          videoElement.srcObject = stream;
+        } catch (error) {
+          document.getElementById("errorDiv").innerHTML =
+            "Sorry error: " + '"' + error + '"' + " has occured";
+        }
+      }
+    </script>
+  </body>
+</html>
